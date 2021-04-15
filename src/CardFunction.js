@@ -7,6 +7,7 @@ import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import axios from 'axios';
 
 const useStyles = then =>({
     root: {
@@ -56,6 +57,20 @@ class CardFunction extends Component{
     render() {
 
         const {classes} = this.props;
+
+        const imagenLoad = () => {
+            console.log("************************************",this.props.info.fileUrl);
+            let data = new FormData();
+            data.append('file', this.state.file);
+
+            axios.get('http://localhost:8080/api/files/'.concat(this.props.info.fileUrl)).then(function (response) {
+                console.log("This is my todolist:  ", response.data);
+                })
+                .catch(function (error) {
+                    console.log("failed file upload");
+                });
+        };
+
         return (
             <Card className={classes.root}>
                 <CardContent>
@@ -76,6 +91,10 @@ class CardFunction extends Component{
                     <Typography variant="h7" component="h5">
                         {new Date(this.props.info.dueDate).toDateString()}
                     </Typography>
+                    <td>
+                        {console.log("-------------------------------------------------","/////////////////////////////////////////////////",this.props.info.fileUrl)}
+                        {this.props.info.fileUrl ? <img /> : <div/>}
+                        </td>
                 </CardContent>
             </Card>
         );

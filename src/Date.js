@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function Date() {
+export default function Date({changeDate}) {
     const classes = useStyles();
 
     return (
@@ -28,6 +28,7 @@ export default function Date() {
                 InputLabelProps={{
                     shrink: true,
                 }}
+            
             />
         </form>
     );

@@ -8,6 +8,7 @@ import Input from '@material-ui/core/Input';
 import Date from './Date';
 import {setTask} from './DrawerComponent';
 import {Link, Route, Switch} from "react-router-dom";
+import axios from 'axios';
 
 
 
@@ -20,16 +21,21 @@ export class NewTask extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {descrip:"", respon:"", status:""}
+        this.state = {descrip:"", respon:"", status:"", file:""}
         this.handleChangeDescrip = this.handleChangeDescrip.bind(this);
         this.handleChangeRespon = this.handleChangeRespon.bind(this);
         this.handleChangeStatus = this.handleChangeStatus.bind(this);
+        this.handleInputChange = this.handleInputChange.bind(this);
+        this.handleChangeDate = this.handleChangeDate.bind(this);
 
+
+        
     }
 
     state = {
         open: true
     }
+
 
     render() {
         const FormHeader = props => (
@@ -45,10 +51,16 @@ export class NewTask extends Component {
 
 
         const enviar = () => {
-            if (localStorage.getItem('descrip') != "" && localStorage.getItem('respon') != "" && localStorage.getItem('status') != ""){
-                return <setTask lista={this.state}/>;
-            }
-            console.log(this.state,"*********************************");
+            let data = new FormData();
+            data.append('file', this.state.file);
+
+            axios.post('http://localhost:8080/api/files', data)
+                    .then(function (response) {
+                        console.log("file uploaded!", data);
+                })
+                .catch(function (error) {
+                    console.log("failed file upload", error);
+                });
         };
 
         const FormButton = props => (
@@ -101,15 +113,20 @@ export class NewTask extends Component {
                                     id="respon"
                                     onChange={this.handleChangeRespon}
                                 />
-                            </FormControl>
+                                </FormControl>
                                 <FormControl margin="normal" required fullWidth >
-                                    <Date/>
+                                    <Date changeDate={this.handleChangeDate}/>
+                                </FormControl>
+                                <FormControl margin="normal" required fullWidth >
+                                    <input type="file" id="file" onChange={this.handleInputChange}/>
                                 </FormControl>
                                 <FormControl margin="normal" required fullWidth >
                                     <Link to="/Draw">
                                         <FormButton title="Guardar"/>
                                     </Link>
                                 </FormControl>
+                                
+                                
                             </form>
                         </div>
 
@@ -131,5 +148,14 @@ export class NewTask extends Component {
     }
     handleChangeStatus(e){
         this.setState({status : e.target.value});
+    }
+
+    handleInputChange(e) {
+        this.setState({
+            file: e.target.files[0]
+        });
+    }
+    handleChangeDate(e){
+        this.setState({Date: e.target.value})
     }
 }

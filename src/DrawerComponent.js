@@ -122,7 +122,8 @@ class DrawerComponent extends React.Component{
                     "email": "sancarbar@gmail"
                 },
                 "status": "ready",
-                "dueDate": 156464645646
+                "dueDate": 156464645646,
+                "fileUrl": "lion.jpeg"
             },
             {
                 "description": "Implement Login View ",
@@ -156,7 +157,6 @@ class DrawerComponent extends React.Component{
 
 
     render(){
-        console.log(this.props.info, "-------------------------");
         const classes = this.props;
         const theme = this.props;
         const {open} = this.state;
